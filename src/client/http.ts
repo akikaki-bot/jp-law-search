@@ -18,8 +18,8 @@ export class HttpClient {
     public async get<T>( endpoint : "LAWS" | "KEYWORD", param: LawParam ) : Promise<APIResponse<T>>
     public async get<T>( endpoint : "LAWREVISIONS" | "LAWDATA", param: LawParam, lawArg: LawId | LawNum ) : Promise<APIResponse<T>>
     public async get<T>( endpoint : "ATTACHMENT", param: LawParam, lawArg: RevisionId ) : Promise<APIResponse<T>>
-    public async get<T>( endpoint : "LAWFILE", param: LawParam, fileType: string, lawArg: string ) : Promise<APIResponse<T>>
-    public async get<T>( endpoint : Endpoints, param: LawParam, fileType?: string, lawArg?: string ) : Promise<APIResponse<T>>{
+    public async get<T>( endpoint : "LAWFILE", param: LawParam, lawArg: string, fileType: string  ) : Promise<APIResponse<T>>
+    public async get<T>( endpoint : Endpoints, param: LawParam, lawArg?: string, fileType?: string ) : Promise<APIResponse<T>>{
 
         const apiEndpoint = ( endpoint : Endpoints, lawArg?: LawId | LawNum | RevisionId, fileType?: string ) => {
             const ep = ENDPOINTS[ endpoint ] as string | Function;
@@ -31,18 +31,22 @@ export class HttpClient {
                     if ( typeof ep === "function" ) {
                         return ep( lawArg as LawId | LawNum );
                     }
+                break;
                 case "LAWDATA":
                     if ( typeof ep === "function" ) {
                         return ep( lawArg as LawId | LawNum | RevisionId );
                     }
+                break;
                 case "ATTACHMENT":
                     if ( typeof ep === "function" ) {
                         return ep( lawArg as RevisionId );
                     }
+                break;
                 case "LAWFILE":
                     if ( typeof ep === "function" && fileType ) {
                         return ep( lawArg as LawId | LawNum | RevisionId, fileType );
                     }
+                break;
                 default:
                     throw new Error(`Invalid endpoint or missing parameters for endpoint: ${endpoint}`);
             }

@@ -2,7 +2,7 @@ import { RepealStatus } from "../types/ILawResponse";
 
 
 
-export function resolveRepealStatus( repealStatus: RepealStatus ): string {
+export function $resolveRepealStatus( repealStatus: RepealStatus ): string {
     switch ( repealStatus ) {
         case "Expire":
             return "失効";
@@ -18,3 +18,4 @@ export function resolveRepealStatus( repealStatus: RepealStatus ): string {
             return "不明";
     }
 }
+

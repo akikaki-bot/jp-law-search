@@ -45,7 +45,7 @@ export class RevisionInfoImpl implements IRevisionInfo {
         this.amendmentLawTitle = rawRevisionInfo.amendment_law_title;
         this.amendmentLawTitleKana = rawRevisionInfo.amendment_law_title_kana;
         this.amendmentLawNum = rawRevisionInfo.amendment_law_num;
-        this.amendmentType = rawRevisionInfo.amendment_type;
+        this.amendmentType = parseInt(rawRevisionInfo.amendment_type.toString()) as AmendmentType;
         this.repealStatus = rawRevisionInfo.repeal_status;
         this.repealDate = new Date(rawRevisionInfo.repeal_date);
         this.mission = rawRevisionInfo.mission;

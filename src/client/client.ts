@@ -1,7 +1,5 @@
-import { ENDPOINTS } from "../constants/endpoints";
 import { isError } from "../types/APIResponse";
 import { IRawLawResponse } from "../types/base/RawLawResponse";
-import { ILawResponse } from "../types/ILawResponse";
 import { LawResponseImpl } from "../types/impl/LawResponseImpl";
 import { LawParam } from "../types/LawParam";
 import { HttpClient } from "./http";
@@ -10,7 +8,7 @@ import { HttpClient } from "./http";
 
 export class Client {
 
-    private httpClient: HttpClient;
+    public readonly httpClient: HttpClient;
     constructor( private responseType: "json" | "xml" = "json" ) {
         this.httpClient = new HttpClient( this.responseType );
     }
@@ -20,7 +18,7 @@ export class Client {
         if( isError( response ) ){
             return response;
         }
-        return new LawResponseImpl(response);
+        return new LawResponseImpl(response, this );
     }
 
 }
