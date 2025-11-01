@@ -1,3 +1,4 @@
+import { Resolver } from "../../resolver";
 import { LawFullText, LawFullTextAttr, LawFullTextChild } from "../base/RawLawDataResponse";
 import { ILawFullText, ILawFullTextAttr, ILawFullTextChild } from "../ILawDataResponse";
 import { LawType } from "../ILawResponse";
@@ -19,6 +20,10 @@ export class LawFullTextImpl implements ILawFullText {
             }
         });
     }
+
+    public toMarkdown(): string {
+        return Resolver.convertRawTextToMarkdown( this );
+    }
 }
 
 export class LawFullTextAttrImpl implements ILawFullTextAttr {
@@ -31,13 +36,47 @@ export class LawFullTextAttrImpl implements ILawFullTextAttr {
     }
 }
 
+export type LawFullTextChildTags =
+| "Law"
+| "LawNum"
+| "LawBody"
+| "LawTitle"
+| "EnactStatement"
+| "Preamble"
+| "TOC"
+| "TOCLabel"
+| "TOCPreambleLabel"
+| "TOCPart"
+| "TOCChapter"
+| "TOCSection"
+| "TOCSubsection"
+| "TOCDivision"
+| "TOCArticle"
+| "TOCSupplProvision"
+| "TOCAppdxTableLabel"
+| "ArticleRange"
+| "MainProvision"
+| "Article"
+| "ArticleRange"
+| "Paragraph"
+| "Item"
+| "SubItem"
+| "ChapterTitle"
+| "ArticleCaption"
+| "ArticleTitle"
+| "ParagraphSentence"
+| "Sentence"
+| "Chapter"
+| "ParagraphNum"
+;
+
 export class LawFullTextChildImpl implements ILawFullTextChild {
-    tag: string;
+    tag: LawFullTextChildTags;
     attr: { AbbrKanaSeion?: string; };
     children: (string | LawFullTextChildImpl)[];
     
     constructor( rawChild : LawFullTextChild ){
-        this.tag = rawChild.tag;
+        this.tag = rawChild.tag as LawFullTextChildTags;
         this.attr = { AbbrKanaSeion: (rawChild.attr as any).AbbrKanaSeion };
         this.children = rawChild.children.map(child => {
             if (typeof child === "string") {

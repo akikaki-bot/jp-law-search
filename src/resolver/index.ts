@@ -2,6 +2,7 @@
 import { $currentLawStatus } from "./currentLawStatus";
 import { $resolveRawText } from "./lawFullText";
 import { $resolveRepealStatus } from "./repealStatus";
+import { $resolveMarkdown } from "./resolveMarkdown";
 
 /**
  * 名前空間: 法令解釈用リゾルバ
@@ -38,6 +39,13 @@ namespace Resolver {
      * }
      */
     export const resolveRawText = $resolveRawText;
+    /**
+     * 法令全文をMarkdown形式に変換します。
+     * @param rawText 法令全文の生データ
+     * 
+     * @returns Markdown形式の文字列
+     */
+    export const convertRawTextToMarkdown = $resolveMarkdown;
 }
 
 export { Resolver };
