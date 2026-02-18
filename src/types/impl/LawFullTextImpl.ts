@@ -2,6 +2,8 @@ import { Resolver } from "../../resolver";
 import { LawFullText, LawFullTextAttr, LawFullTextChild } from "../base/RawLawDataResponse";
 import { ILawFullText, ILawFullTextAttr, ILawFullTextChild } from "../ILawDataResponse";
 import { LawType } from "../ILawResponse";
+import { MarkdownExportConfig } from "../IparamConfig/markdownExportConfig";
+
 
 
 export class LawFullTextImpl implements ILawFullText {
@@ -21,8 +23,8 @@ export class LawFullTextImpl implements ILawFullText {
         });
     }
 
-    public toMarkdown(): string {
-        return Resolver.convertRawTextToMarkdown( this );
+    public toMarkdown( config ?: MarkdownExportConfig ): string {
+        return Resolver.convertRawTextToMarkdown( this, config );
     }
 }
 

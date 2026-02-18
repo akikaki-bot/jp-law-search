@@ -1,13 +1,15 @@
 import { LawFullTextChildImpl, LawFullTextImpl } from "../types/impl/LawFullTextImpl";
+import { MarkdownExportConfig } from "../types/IparamConfig/markdownExportConfig";
 
 
-export const $resolveMarkdown = ( article : LawFullTextImpl ) : string => {
-    return new ProcessSchemaToMarkdown( article ).process();
+export const $resolveMarkdown = ( article : LawFullTextImpl, config ?: MarkdownExportConfig ) : string => {
+    return new ProcessSchemaToMarkdown( article, config ).process();
 }
 
 class ProcessSchemaToMarkdown {
     constructor(
-        private node: LawFullTextImpl
+        private node: LawFullTextImpl,
+        private config ?: MarkdownExportConfig
     ) {
         
     }
@@ -27,11 +29,13 @@ class ProcessSchemaToMarkdown {
             case "Law":
             case "LawBody":
             case "TOC":
-            case "TOCChapter":
             case "MainProvision":
             case "Chapter":
                 return this.processAllChildren( child );
             
+            case "TOCChapter":
+                return this.processTOCChapter( child );
+
             case "LawNum":
                 return this.normalText( child.children.join("") );
             case "LawTitle":
@@ -65,6 +69,16 @@ class ProcessSchemaToMarkdown {
 
         }
 
+    }
+
+    private processTOCChapter( content: LawFullTextChildImpl ): string {
+        const Label = content.children.find( child => 
+            typeof child !== "string" && child.tag == "ChapterTitle"
+        ) as LawFullTextChildImpl | undefined;
+        if( this.config?.expmerimental_title_anchor_link ){
+            return this.markdownLevel( this.processAllChildren( content ), 3 );
+        }
+        return `[${ Label.children.join("") }](#${ Label.children.join("").replace( /\s/g, "-" ) })`;
     }
 
     private processZenkakuNumber( content: string ) : string {
