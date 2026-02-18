@@ -75,10 +75,10 @@ class ProcessSchemaToMarkdown {
         const Label = content.children.find( child => 
             typeof child !== "string" && child.tag == "ChapterTitle"
         ) as LawFullTextChildImpl | undefined;
-        if( this.config?.expmerimental_title_anchor_link ){
-            return this.markdownLevel( this.processAllChildren( content ), 3 );
+        if( this.config?.experimental_title_anchor_link ){
+            return `[${ Label.children.join("") }](#${ Label.children.join("").replace( /\s/g, "" ) })\n`
         }
-        return `[${ Label.children.join("") }](#${ Label.children.join("").replace( /\s/g, "-" ) })`;
+        return this.markdownLevel( this.processAllChildren( content ), 3 );;
     }
 
     private processZenkakuNumber( content: string ) : string {
